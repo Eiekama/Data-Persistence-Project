@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,10 +16,14 @@ public class MenuUIHandler : MonoBehaviour
 
     private void Start()
     {
-        DataManager.Instance.LoadData();
-        if (DataManager.Instance.BestUser != "")
+        if (DataManager.Instance.BestScores.Count == 0)
         {
-            bestScoreText.text = $"Congratulations to {DataManager.Instance.BestUser} for best score of {DataManager.Instance.BestScore}";
+            DataManager.Instance.LoadData();
+        }
+        DataManager.Instance.PrintScores();
+        if (DataManager.Instance.BestScores.Count != 0)
+        {
+            bestScoreText.text = $"Congratulations to {DataManager.Instance.BestScores.ElementAt(0).Key} for best score of {DataManager.Instance.BestScores.ElementAt(0).Value}";
         }
     }
 
@@ -28,7 +33,7 @@ public class MenuUIHandler : MonoBehaviour
         {
             errors[0].enabled = true;
             return false;
-        } //add elif later to check if name is taken
+        }
         else
         {
             return true;

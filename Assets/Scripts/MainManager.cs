@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MainManager : MonoBehaviour
 {
@@ -40,9 +41,9 @@ public class MainManager : MonoBehaviour
 
         AddPoint(0);
 
-        if (DataManager.Instance.BestUser != "")
+        if (DataManager.Instance.BestScores.Count != 0)
         {
-            BestScoreText.text = $"Best Score : {DataManager.Instance.BestUser} : {DataManager.Instance.BestScore}";
+            BestScoreText.text = $"Best Score : {DataManager.Instance.BestScores.ElementAt(0).Key} : {DataManager.Instance.BestScores.ElementAt(0).Value}";
         }
     }
 
@@ -83,10 +84,18 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        if (DataManager.Instance.BestScore < m_Points)
+
+        if (DataManager.Instance.BestScores.ContainsKey(DataManager.Instance.Username))
         {
-            DataManager.Instance.BestScore = m_Points;
-            DataManager.Instance.BestUser = DataManager.Instance.Username;
+            if (DataManager.Instance.BestScores[DataManager.Instance.Username] < m_Points)
+            {
+                DataManager.Instance.BestScores[DataManager.Instance.Username] = m_Points;
+            }
         }
+        else
+        {
+            DataManager.Instance.BestScores.Add(DataManager.Instance.Username, m_Points);
+        }
+        DataManager.Instance.SortScores();
     }
 }
