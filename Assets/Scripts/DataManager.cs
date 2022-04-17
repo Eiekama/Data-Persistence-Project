@@ -27,12 +27,11 @@ public class DataManager : MonoBehaviour
         var sortedScores = from score in BestScores
                            orderby score.Value descending
                            select score;
-        var sortedDic = new Dictionary<string, int>();
-        for (int i = 0; i < BestScores.Count; i++)
+        BestScores = new Dictionary<string, int>();
+        foreach (var pair in sortedScores)
         {
-            sortedDic.Add(sortedScores.ElementAt(i).Key, sortedScores.ElementAt(i).Value);
+            BestScores.Add(pair.Key, pair.Value);
         }
-        BestScores = sortedDic;
         while (BestScores.Count > 5)
         {
             BestScores.Remove(BestScores.ElementAt(BestScores.Count - 1).Key);

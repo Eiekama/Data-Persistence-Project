@@ -25,6 +25,10 @@ public class MenuUIHandler : MonoBehaviour
         {
             bestScoreText.text = $"Congratulations to {DataManager.Instance.BestScores.ElementAt(0).Key} for best score of {DataManager.Instance.BestScores.ElementAt(0).Value}";
         }
+        if (DataManager.Instance.Username != null)
+        {
+            input.text = DataManager.Instance.Username;
+        }
     }
 
     bool IsNameValid()
